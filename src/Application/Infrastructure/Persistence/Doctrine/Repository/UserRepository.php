@@ -10,14 +10,11 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 
-
-class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface,ServiceEntityRepositoryInterface, UserLoaderInterface
+class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface, ServiceEntityRepositoryInterface, UserLoaderInterface
 {
-
     public function __construct(ManagerRegistry $managerRegistry)
     {
         parent::__construct($managerRegistry, User::class);
-
     }
 
     public function save(User $user): void
@@ -35,7 +32,6 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
     public function loadUserByIdentifier(string $usernameOrEmail): ?User
     {
-       return $this->findOneByEmail($usernameOrEmail);
-
+        return $this->findOneByEmail($usernameOrEmail);
     }
 }

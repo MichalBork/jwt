@@ -2,7 +2,6 @@
 
 namespace App\Application\Infrastructure\Persistence\Doctrine\Repository;
 
-
 use App\Application\Domain\User\User;
 
 interface UserRepositoryInterface

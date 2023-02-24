@@ -13,27 +13,27 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #[AsMessageHandler]
 class RegistrationCommandHandler
 {
-
     private UserRepositoryInterface $userRepository;
     private UserPasswordHasherInterface $userPasswordHasher;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
         UserPasswordHasherInterface $userPasswordHasher
-    )
-    {
+    ) {
         $this->userRepository = $userRepository;
         $this->userPasswordHasher = $userPasswordHasher;
     }
 
 
-    public function __invoke(RegistrationCommand $command)
+    public function __invoke(RegistrationCommand $command): void
     {
-        $user = new User($command->getEmail(), $command->getPassword());
-        $this->userPasswordHasher->hashPassword($user, $user->getPassword());
-        $user->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPassword()));
-        $this->userRepository->save($user);
+        try {
+            $user = new User($command->getEmail(), $command->getPassword());
+            $this->userPasswordHasher->hashPassword($user, $user->getPassword());
+            $user->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPassword()));
+            $this->userRepository->save($user);
+        } catch (\Exception $e) {
+            throw new \Exception('Error registration');
+        }
     }
-
-
 }
