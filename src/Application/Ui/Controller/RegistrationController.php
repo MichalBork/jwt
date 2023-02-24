@@ -75,8 +75,8 @@ class RegistrationController extends AbstractController
         $token = json_decode($request->getContent(), true)['token'];
         try {
             $refreshToken = $this->handle(new RefreshTokenCommand($token));
-        } catch (HandlerFailedException $e) {
-            $this->handleError($e);
+        } catch (\Throwable $e) {
+            return $this->handleError($e);
         }
 
         return new JsonResponse([
@@ -93,7 +93,7 @@ class RegistrationController extends AbstractController
         try {
             $this->handle(new LogoutCommand($token));
         } catch (HandlerFailedException $e) {
-            $this->handleError($e);
+            return $this->handleError($e);
         }
 
         return new JsonResponse([

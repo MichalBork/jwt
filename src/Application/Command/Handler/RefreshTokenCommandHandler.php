@@ -39,7 +39,8 @@ class RefreshTokenCommandHandler
         }
 
         $userData = $this->userRepository->findOneByEmail($user['email']);
-        if ($userData->getArrayForEncode()['sessionToken'] != $user['sessionToken']) {
+
+        if ($userData->getArrayForEncode()['sessionToken']->toString() != $user['sessionToken']) {
             throw new InvalidTokenException('Invalid token');
         }
 
