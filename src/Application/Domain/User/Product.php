@@ -25,8 +25,29 @@ class Product
     #[ORM\Column(type: 'string')]
     private $description;
 
-    #[ORM\Column(type: 'text',length: 65535, nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $image;
+
+    #[ORM\Column(type: 'string')]
+    private $status;
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status): void
+    {
+        $this->status = $status;
+    }
+
+
 
     /**
      * @return mixed
@@ -47,21 +68,22 @@ class Product
     #[ORM\Column(type: 'datetime_immutable')]
     private $createdAt;
 
-    #[ORM\Column(type: 'datetime_immutable')]
+    #[ORM\Column(type: 'datetime_immutable',nullable: true)]
     private $updatedAt;
 
     public function __construct(
         string $name,
         float $price,
         string $description,
-        string $image
+        string $image,
+        string $status
     ) {
         $this->name = $name;
         $this->price = $price;
         $this->description = $description;
         $this->image = $image;
+        $this->status = $status;
         $this->createdAt = new \DateTimeImmutable();
-        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getId(): string
@@ -93,5 +115,38 @@ class Product
     {
         return $this->updatedAt;
     }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @param float $price
+     */
+    public function setPrice(float $price): void
+    {
+        $this->price = $price;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @param \DateTimeImmutable $updatedAt
+     */
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
 
 }

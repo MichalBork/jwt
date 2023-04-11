@@ -20,17 +20,18 @@ class ProductController extends AbstractController
     }
 
     #[Route('/{id}', name: 'show', methods: ['GET'])]
-    public function show(Request $request): \Symfony\Component\HttpFoundation\JsonResponse
+    public function show(Request $request, $id): \Symfony\Component\HttpFoundation\JsonResponse
     {
-        $product = $this->productRepository->findOneById($request->request->get('id'));
+
+        $product = $this->productRepository->findOneById($id);
 
         return $this->json($product);
     }
 
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
-    public function delete(Request $request): JsonResponse
+    public function delete(Request $request, $id): JsonResponse
     {
-        $product = $this->productRepository->findOneById($request->request->get('id'));
+        $product = $this->productRepository->findOneById($id);
         $this->productRepository->deleteProduct($product);
 
         return $this->json(['message' => 'Product deleted successfully']);
@@ -49,9 +50,24 @@ class ProductController extends AbstractController
     public function create(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $product = new Product($data['name'], $data['price'], $data['description'], $data['image']);
+        $product = new Product($data['name'], $data['price'], $data['description'], $data['image'], 'active');
         $this->productRepository->createProduct($product);
 
         return $this->json(['message' => 'Product created successfully']);
+    }
+
+    #[Route('/update/{id}', name: 'update', methods: ['PUT'])]
+    public function update(Request $request, $id): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $product = $this->productRepository->findOneById($id);
+        $product->setName($data['name']);
+        $product->setPrice($data['price']);
+        $product->setDescription($data['description']);
+        $product->setImage($data['image']);
+        $product->setStatus($data['status']);
+        $this->productRepository->updateProduct($product);
+
+        return $this->json(['message' => $data['status']]);
     }
 }

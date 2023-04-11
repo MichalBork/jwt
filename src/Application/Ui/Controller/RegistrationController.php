@@ -102,6 +102,8 @@ class RegistrationController extends AbstractController
     }
 
 
+
+
     private function handleError(\Exception $e): Response
     {
         $previousException = $e->getPrevious();
