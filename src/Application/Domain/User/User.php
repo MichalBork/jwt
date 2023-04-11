@@ -38,7 +38,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface, JsonSer
         $this->email = $email;
         $this->password = $password;
         $this->roles = new ArrayCollection();
-        $this->roles->add(Roles::fromUser($this, 'ROLE_USER'));
+        $this->roles->add(Roles::fromUser($this, 'ADMIN'));
         $this->createSessionToken();
     }
 
